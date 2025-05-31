@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Random Quote Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f8ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .quote-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .quote {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .author {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .share {
+      background-color: #1da1f2;
+    }
+
+    .share:hover {
+      background-color: #0d95e8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quote-box">
+    <div class="quote" id="quote">Click the button to get a quote!</div>
+    <div class="author" id="author"></div>
+    <button onclick="getQuote()">New Quote</button>
+    <button class="share" onclick="shareQuote()">Share on Twitter</button>
+  </div>
+
+  <script>
+    const quotes = [
+      { text: "Be yourself; everyone else is already taken.", author: "Oscar Wilde" },
+      { text: "The only limit to our realization of tomorrow is our doubts of today.", author: "Franklin D. Roosevelt" },
+      { text: "Do not take life too seriously. You will never get out of it alive.", author: "Elbert Hubbard" },
+      { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
+      { text: "In the middle of every difficulty lies opportunity.", author: "Albert Einstein" },
+      { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
+    ];
+
+    function getQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      const quote = quotes[randomIndex];
+      document.getElementById('quote').innerText = `"${quote.text}"`;
+      document.getElementById('author').innerText = `— ${quote.author}`;
+    }
+
+    function shareQuote() {
+      const quote = document.getElementById('quote').innerText;
+      const author = document.getElementById('author').innerText;
+      const tweet = `${quote} ${author}`;
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
+      window.open(twitterUrl, '_blank');
+    }
+  </script>
+
+</body>
+</html>
