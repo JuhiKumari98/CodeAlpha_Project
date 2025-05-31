@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fitness Tracker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      background: white;
+      margin: auto;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .workout-log {
+      margin-top: 20px;
+    }
+
+    .progress-bar {
+      background: #e0e0e0;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 25px;
+      margin-top: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background-color: #28a745;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      transition: width 0.5s ease;
+    }
+
+    .workout-entry {
+      background: #f9f9f9;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border-left: 4px solid #28a745;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Fitness Tracker App</h1>
+
+    <h2>Set Your Goal (Total Calories)</h2>
+    <input type="number" id="calorieGoal" placeholder="Enter your calorie goal" />
+    <button onclick="setGoal()">Set Goal</button>
+
+    <h2>Log Workout</h2>
+    <select id="exerciseType">
+      <option value="Running">Running</option>
+      <option value="Cycling">Cycling</option>
+      <option value="Yoga">Yoga</option>
+      <option value="Weight Lifting">Weight Lifting</option>
+      <option value="Swimming">Swimming</option>
+    </select>
+    <input type="number" id="duration" placeholder="Duration in minutes" />
+    <input type="number" id="calories" placeholder="Calories burned" />
+    <button onclick="addWorkout()">Add Workout</button>
+
+    <div class="workout-log">
+      <h2>Workout Log</h2>
+      <div id="log"></div>
+    </div>
+
+    <h2>Progress Toward Goal</h2>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill">0%</div>
+    </div>
+  </div>
+
+  <script>
+    let workouts = [];
+    let calorieGoal = 0;
+
+    function setGoal() {
+      const input = document.getElementById("calorieGoal").value;
+      if (input > 0) {
+        calorieGoal = parseInt(input);
+        updateProgress();
+        alert("Goal set successfully!");
+      } else {
+        alert("Please enter a valid number.");
+      }
+    }
+
+    function addWorkout() {
+      const type = document.getElementById("exerciseType").value;
+      const duration = parseInt(document.getElementById("duration").value);
+      const calories = parseInt(document.getElementById("calories").value);
+
+      if (duration > 0 && calories > 0) {
+        const workout = { type, duration, calories };
+        workouts.push(workout);
+        displayWorkouts();
+        updateProgress();
+        document.getElementById("duration").value = '';
+        document.getElementById("calories").value = '';
+      } else {
+        alert("Enter valid numbers for duration and calories.");
+      }
+    }
+
+    function displayWorkouts() {
+      const log = document.getElementById("log");
+      log.innerHTML = '';
+      workouts.forEach((w, index) => {
+        log.innerHTML += `
+          <div class="workout-entry">
+            <strong>${w.type}</strong> - ${w.duration} min, ${w.calories} cal
+          </div>
+        `;
+      });
+    }
+
+    function updateProgress() {
+      const totalCalories = workouts.reduce((sum, w) => sum + w.calories, 0);
+      const percent = calorieGoal > 0 ? Math.min(100, (totalCalories / calorieGoal) * 100).toFixed(1) : 0;
+      const progressFill = document.getElementById("progressFill");
+      progressFill.style.width = `${percent}%`;
+      progressFill.innerText = `${percent}%`;
+    }
+  </script>
+
+</body>
+</html>
